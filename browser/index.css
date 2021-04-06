@@ -5,8 +5,8 @@
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(10, 80px);
-  grid-template-rows: repeat(10, 80px);
+  grid-template-columns: repeat(10, 40px);
+  grid-template-rows: repeat(10, 40px);
   grid-gap: 5px;
 }
 .cell {
