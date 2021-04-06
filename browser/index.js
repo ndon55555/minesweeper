@@ -26,7 +26,7 @@ window.onload = function(){
     }
 };
 
-const socket = io("http://localhost:5000");
+const socket = io(window.location.href);
 socket.emit("board");
 socket.on("board", function(jsonGameState) {
     const gameState = JSON.parse(jsonGameState);
