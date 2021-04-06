@@ -2,7 +2,7 @@ function handleServerResponse() {
   if (http.readyState === XMLHttpRequest.DONE) {
     const gameState = JSON.parse(http.responseText);
     const grid = document.getElementById("gameGrid");
-    
+
     for(const child of grid.children) {
       const row = parseInt(child.getAttribute("row"));
       const col = parseInt(child.getAttribute("col"));
@@ -26,16 +26,36 @@ window.onload = function(){
     }
 };
 
+const socket = io("http://localhost:5000");
+socket.emit("board");
+socket.on("board", function(jsonGameState) {
+    const gameState = JSON.parse(jsonGameState);
+    const grid = document.getElementById("gameGrid");
 
-const http = new XMLHttpRequest();
-http.onreadystatechange = handleServerResponse;
-http.open('GET', 'board', true);
-http.send();
+    for(const child of grid.children) {
+      const row = parseInt(child.getAttribute("row"));
+      const col = parseInt(child.getAttribute("col"));
+
+      child.innerText = gameState[row][col];
+    }
+});
+socket.on("open", function(jsonGameState) {
+  const gameState = JSON.parse(jsonGameState);
+  const grid = document.getElementById("gameGrid");
+
+  for(const child of grid.children) {
+    const row = parseInt(child.getAttribute("row"));
+    const col = parseInt(child.getAttribute("col"));
+
+    child.innerText = gameState[row][col];
+  }
+});
 
 function openTile(row, col) {
-  http.open('POST', 'open', true);
-  http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  http.send("row="+row+"&col="+col);
+  socket.emit("open", row, col);
+  // http.open('POST', 'open', true);
+  // http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  // http.send("row="+row+"&col="+col);
 }
 
 function createMinesweeperTile(i, j) {
