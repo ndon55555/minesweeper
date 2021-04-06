@@ -3,6 +3,12 @@ function handleServerResponse() {
     // const p = document.getElementById("changeThis");
     const gameState = JSON.parse(http.responseText);
     const grid = document.getElementById("gameGrid")
+    for(const child of grid.children) {
+      const row = parseInt(child.getAttribute("row"));
+      const col = parseInt(child.getAttribute("col"));
+
+      child.innerText = gameState[row][col];
+    }
     //grid.innerHTML = ''; // Remove children
 
     // console.log(resp)
@@ -14,14 +20,18 @@ window.onload = function(){
     const rows = 10;
     const cols = 10;
     const grid = document.getElementById("gameGrid")
-    let divID = 0;
+
     for(let i=0; i<rows; i++) {
       for(let j=0; j<cols; j++) {
         let newDiv = document.createElement("div");
         newDiv.setAttribute("class", "cell");
-        newDiv.setAttribute("id", divID.toString())
+        newDiv.setAttribute("row", i);
+        newDiv.setAttribute("col", j);
+        newDiv.onclick = function() {
+          openTile(i, j);
+        }
+        
         console.log(newDiv);
-        divID++;
         grid.appendChild(newDiv);
       }
     }
