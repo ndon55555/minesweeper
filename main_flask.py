@@ -1,36 +1,18 @@
 import json
 
-from flask import Flask, Response, render_template, request
+from flask import Flask, redirect, url_for
 from flask_socketio import SocketIO, emit
 
 from minesweeper import core
 
-app = Flask(__name__, static_folder="browser")
+app = Flask(__name__, static_url_path="", static_folder="browser")
 board = core.Board(rows=10, cols=10, mines=30)
-
-
 socketio = SocketIO(app)
-
-
-@socketio.on("message")
-def handle_message(data):
-    print("received message: " + data)
-    emit("some event", data, broadcast=True)
 
 
 @app.route("/")
 def open_page():
-    return app.send_static_file("index.html")
-
-
-@app.route("/index.js")
-def get_js():
-    return app.send_static_file("index.js")
-
-
-@app.route("/index.css")
-def get_css():
-    return app.send_static_file("index.css")
+    return redirect("index.html")
 
 
 @socketio.on("board")
