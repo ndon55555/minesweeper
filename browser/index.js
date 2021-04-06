@@ -26,7 +26,7 @@ window.onload = function(){
     }
 };
 
-const socket = io(window.location.href);
+const socket = io();
 socket.emit("board");
 socket.on("board", function(jsonGameState) {
     const gameState = JSON.parse(jsonGameState);
@@ -40,6 +40,7 @@ socket.on("board", function(jsonGameState) {
     }
 });
 socket.on("open", function(jsonGameState) {
+  console.log("got an open response")
   const gameState = JSON.parse(jsonGameState);
   const grid = document.getElementById("gameGrid");
 
@@ -53,9 +54,6 @@ socket.on("open", function(jsonGameState) {
 
 function openTile(row, col) {
   socket.emit("open", row, col);
-  // http.open('POST', 'open', true);
-  // http.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  // http.send("row="+row+"&col="+col);
 }
 
 function createMinesweeperTile(i, j) {
