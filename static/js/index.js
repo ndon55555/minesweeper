@@ -1,17 +1,3 @@
-function handleServerResponse() {
-  if (http.readyState === XMLHttpRequest.DONE) {
-    const gameState = JSON.parse(http.responseText);
-    const grid = document.getElementById("gameGrid");
-
-    for(const child of grid.children) {
-      const row = parseInt(child.getAttribute("row"));
-      const col = parseInt(child.getAttribute("col"));
-
-      child.innerText = gameState[row][col];
-    }
-  }
-}
-
 window.onload = function(){
     const rows = 10;
     const cols = 10;
@@ -20,7 +6,6 @@ window.onload = function(){
     for(let i=0; i<rows; i++) {
       for(let j=0; j<cols; j++) {
         const newDiv = createMinesweeperTile(i, j);
-        console.log(newDiv);
         grid.appendChild(newDiv);
       }
     }
