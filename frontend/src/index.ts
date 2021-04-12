@@ -3,8 +3,42 @@ import { io, Socket } from "socket.io-client"
 
 function getSocket(): Socket {
     const socket = io()
+
+    const setupTiles = (jsonGameState: string): void => {
+        const openTile = (row: number, col: number): void => {
+            socket.emit("open", row, col)
+        }
+
+        const createMinesweeperTile = (i: number, j: number, value: string): HTMLDivElement => {
+            const newDiv = <HTMLDivElement>document.createElement("div")
+            newDiv.setAttribute("class", "cell")
+            newDiv.setAttribute("row", i.toString())
+            newDiv.setAttribute("col", j.toString())
+            newDiv.innerText = value
+            newDiv.onclick = function() {
+                openTile(i, j)
+            }
+
+            return newDiv
+        }
+
+        const gameState = <Array<string>>JSON.parse(jsonGameState)
+        const rows = gameState.length
+        const cols = gameState[0].length
+        const grid = <HTMLDivElement>document.getElementById("gameGrid")
+
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                const newDiv = createMinesweeperTile(row, col, gameState[row][col])
+                grid?.appendChild(newDiv)
+            }
+        }
+    }
+
+    socket.on("board", setupTiles)
+
     const updateTiles = (jsonGameState: string): void => {
-        const gameState = JSON.parse(jsonGameState)
+        const gameState = <Array<string>>JSON.parse(jsonGameState)
         const grid = <HTMLDivElement>document.getElementById("gameGrid")
         const children = grid.children
 
@@ -17,47 +51,14 @@ function getSocket(): Socket {
         }
     }
 
-    socket.on("board", updateTiles)
     socket.on("open", updateTiles)
 
     return socket
 }
 
-function setupTiles(socket: Socket): void {
-    const openTile = (row: number, col: number): void => {
-        socket.emit("open", row, col)
-    }
-
-    const createMinesweeperTile = (i: number, j: number): HTMLDivElement => {
-        const newDiv = <HTMLDivElement>document.createElement("div")
-        newDiv.setAttribute("class", "cell")
-        newDiv.setAttribute("row", i.toString())
-        newDiv.setAttribute("col", j.toString())
-        newDiv.onclick = function() {
-            openTile(i, j)
-        }
-
-        return newDiv
-    }
-
-    window.onload = () => {
-        const rows = 10
-        const cols = 10
-        const grid = document.getElementById("gameGrid")
-
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < cols; j++) {
-                const newDiv = createMinesweeperTile(i, j)
-                grid?.appendChild(newDiv)
-            }
-        }
-    }
-}
-
 function main(): void {
     const socket = getSocket()
-    setupTiles(socket)
     socket.emit("board") // Request the current state of the game to render on the page
 }
 
-main()
+window.onload = main
