@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-gunicorn --worker-class=eventlet --workers=1 server:app
+MINESWEEPER_STATIC_FOLDER="./browser/" gunicorn --worker-class=eventlet --workers=1 server:app
