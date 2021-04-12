@@ -33,6 +33,10 @@ function getSocket(): Socket {
                 grid?.appendChild(newDiv)
             }
         }
+
+        const container = document.getElementById("gameContainer")
+        container?.style.setProperty("--grid-rows", rows.toString())
+        container?.style.setProperty("--grid-cols", cols.toString())
     }
 
     socket.on("board", setupTiles)

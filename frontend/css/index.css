@@ -1,14 +1,21 @@
+:root {
+  --grid-rows: 1;
+  --grid-cols: 1;
+}
+
 .container {
   background: black;
   display: inline-block;
   border: 5px solid black;
 }
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(10, 40px);
-  grid-template-rows: repeat(10, 40px);
+  grid-template-rows: repeat(var(--grid-rows), 40px);
+  grid-template-columns: repeat(var(--grid-cols), 40px);
   grid-gap: 5px;
 }
+
 .cell {
    /* center the cell content */
   justify-content: center;

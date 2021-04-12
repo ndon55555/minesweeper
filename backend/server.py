@@ -30,7 +30,7 @@ def get_static_folder():
 app = Flask(__name__, static_url_path="", static_folder=get_static_folder())
 
 socketio = SocketIO(app)
-board = core.Board(rows=10, cols=10, mines=10)
+board = core.Board(rows=16, cols=16, mines=40)
 
 
 @app.route("/")
