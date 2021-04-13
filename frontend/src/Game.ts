@@ -49,9 +49,8 @@ class HTMLBoard implements Board {
             }
         }
 
-        const container = document.getElementById("gameContainer")
-        container?.style.setProperty("--grid-rows", rows.toString())
-        container?.style.setProperty("--grid-cols", cols.toString())
+        GAME_GRID.style.setProperty("--grid-rows", rows.toString())
+        GAME_GRID.style.setProperty("--grid-cols", cols.toString())
     }
 
     *[Symbol.iterator](): Iterator<[Position, Tile]> {
