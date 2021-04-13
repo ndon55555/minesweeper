@@ -1,4 +1,10 @@
-const GAME_GRID = <HTMLDivElement>document.getElementById("gameGrid")
+const GAME_GRID_ID = "gameGrid"
+const gameGridElement = document.getElementById(GAME_GRID_ID)
+
+if (gameGridElement == null) {
+    throw `HTML Div element with id '${GAME_GRID_ID}' must exist`
+}
+const GAME_GRID_DIV = <HTMLDivElement>gameGridElement
 
 type Position = [number, number]
 
@@ -20,7 +26,7 @@ class HTMLDivGameTile implements Tile {
         this.div = <HTMLDivElement>document.createElement("div")
         this.div.setAttribute("class", "cell")
         this.div.innerText = ""
-        GAME_GRID.appendChild(this.div)
+        GAME_GRID_DIV.appendChild(this.div)
     }
 
     setOnClick(handler: () => void): void {
@@ -49,8 +55,8 @@ class HTMLBoard implements Board {
             }
         }
 
-        GAME_GRID.style.setProperty("--grid-rows", rows.toString())
-        GAME_GRID.style.setProperty("--grid-cols", cols.toString())
+        GAME_GRID_DIV.style.setProperty("--grid-rows", rows.toString())
+        GAME_GRID_DIV.style.setProperty("--grid-cols", cols.toString())
     }
 
     *[Symbol.iterator](): Iterator<[Position, Tile]> {
