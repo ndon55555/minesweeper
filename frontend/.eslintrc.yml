@@ -32,6 +32,9 @@ rules:
     - error
   "@typescript-eslint/no-inferrable-types":
     - error
+    - ignoreParameters: true
+      ignoreProperties: true
+
   "@typescript-eslint/explicit-member-accessibility":
     - error
     - accessibility: "no-public"
