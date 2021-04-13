@@ -10,8 +10,12 @@ import sys
 
 from flask import Flask, redirect
 from flask_socketio import SocketIO, emit
-
+from logdecorator import log_on_start
 from minesweeper import core
+
+logging.basicConfig()
+GAME_LOGGER = logging.getLogger("minesweeper")
+GAME_LOGGER.setLevel(logging.INFO)
 
 
 def get_static_folder():
@@ -28,8 +32,8 @@ def get_static_folder():
 
 
 app = Flask(__name__, static_url_path="", static_folder=get_static_folder())
-
 socketio = SocketIO(app)
+GAME_LOGGER.info("Setting up minesweeper board")
 board = core.Board(rows=16, cols=16, mines=40)
 
 
@@ -39,11 +43,17 @@ def open_page():
 
 
 @socketio.on("board")
+@log_on_start(logging.INFO, "Board state requested", logger=GAME_LOGGER)
 def get_board():
     emit("board", json.dumps(getTileData()))
 
 
 @socketio.on("open")
+@log_on_start(
+    logging.INFO,
+    "Attempting to open tile at row {row}, column {col}",
+    logger=GAME_LOGGER,
+)
 def open_tile(row, col):
     board.tile_open(row, col)
     emit("open", json.dumps(getTileData()), broadcast=True)
