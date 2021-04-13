@@ -19,7 +19,7 @@ export interface Tile {
     setOnClick(handler: () => void): void
 }
 
-class HTMLDivGameTile implements Tile {
+class DivGameTile implements Tile {
     private readonly div: HTMLDivElement
 
     constructor() {
@@ -42,7 +42,7 @@ class HTMLDivGameTile implements Tile {
     }
 }
 
-class HTMLBoard implements Board {
+class DivBoard implements Board {
     private tiles: Array<Array<Tile>> = []
 
     constructor(rows: number, cols: number) {
@@ -51,7 +51,7 @@ class HTMLBoard implements Board {
             this.tiles.push(row)
 
             for (let j = 0; j < cols; j++) {
-                row.push(new HTMLDivGameTile())
+                row.push(new DivGameTile())
             }
         }
 
@@ -70,5 +70,5 @@ class HTMLBoard implements Board {
 }
 
 export function createBoard(rows: number, cols: number): Board {
-    return new HTMLBoard(rows, cols)
+    return new DivBoard(rows, cols)
 }
