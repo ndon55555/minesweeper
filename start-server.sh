@@ -9,5 +9,5 @@ popd
 
 # Serve static files and start game server
 pushd "$(pwd)/backend"
-MINESWEEPER_STATIC_FOLDER="$artifacts_dir" gunicorn --worker-class=eventlet --workers=1 server:app
+MINESWEEPER_STATIC_FOLDER="$artifacts_dir" poetry run gunicorn --worker-class=eventlet --workers=1 server:app
 popd
