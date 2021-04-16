@@ -46,6 +46,23 @@ class DivBoard implements Board {
     private tiles: Array<Array<Tile>> = []
 
     constructor(rows: number, cols: number) {
+        this.clearGameGrid()
+        this.resizeGameGridDimensions(rows, cols)
+        this.generateTiles(rows, cols)
+    }
+
+    private clearGameGrid(): void {
+        while (GAME_GRID_DIV.firstChild) {
+            GAME_GRID_DIV.removeChild(GAME_GRID_DIV.firstChild)
+        }
+    }
+
+    private resizeGameGridDimensions(rows: number, cols: number): void {
+        GAME_GRID_DIV.style.setProperty("--grid-rows", rows.toString())
+        GAME_GRID_DIV.style.setProperty("--grid-cols", cols.toString())
+    }
+
+    private generateTiles(rows: number, cols: number): void {
         for (let i = 0; i < rows; i++) {
             const row: Array<Tile> = []
             this.tiles.push(row)
@@ -54,14 +71,13 @@ class DivBoard implements Board {
                 row.push(new DivGameTile())
             }
         }
-
-        GAME_GRID_DIV.style.setProperty("--grid-rows", rows.toString())
-        GAME_GRID_DIV.style.setProperty("--grid-cols", cols.toString())
     }
 
     *[Symbol.iterator](): Iterator<[Position, Tile]> {
-        for (const i of this.tiles.keys()) {
-            for (const j of this.tiles[i].keys()) {
+        const rowIndices = this.tiles.keys()
+        for (const i of rowIndices) {
+            const colIndices = this.tiles[i].keys()
+            for (const j of colIndices) {
                 const pair: [Position, Tile] = [[i, j], this.tiles[i][j]]
                 yield pair
             }
