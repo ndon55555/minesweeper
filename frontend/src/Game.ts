@@ -74,11 +74,9 @@ class DivBoard implements Board {
     }
 
     *[Symbol.iterator](): Iterator<[Position, Tile]> {
-        const rowIndices = this.tiles.keys()
-        for (const i of rowIndices) {
-            const colIndices = this.tiles[i].keys()
-            for (const j of colIndices) {
-                const pair: [Position, Tile] = [[i, j], this.tiles[i][j]]
+        for (const [rowIdx, row] of this.tiles.entries()) {
+            for (const [colIdx, tile] of row.entries()) {
+                const pair: [Position, Tile] = [[rowIdx, colIdx], tile]
                 yield pair
             }
         }
