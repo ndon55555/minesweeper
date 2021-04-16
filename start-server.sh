@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 artifacts_dir="$(pwd)/artifacts/"
 
 # Generate static files
 pushd "$(pwd)/frontend"
-    npx webpack --env minesweeper_static_folder="$artifacts_dir"
+npx webpack --env minesweeper_static_folder="$artifacts_dir"
 popd
 
 # Serve static files and start game server
