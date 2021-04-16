@@ -8,6 +8,11 @@ function parseGameJSON(jsonGameState: string): Array<Array<string>> {
 function setupSocket(socket: Socket): void {
     let board: Board
 
+    const resetButton = <HTMLButtonElement>document.getElementById("resetGame")
+    resetButton.onclick = () => {
+        socket.emit("reset")
+    }
+
     function openTile(row: number, col: number): void {
         socket.emit("open", row, col)
     }

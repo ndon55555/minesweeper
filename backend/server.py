@@ -59,6 +59,13 @@ def open_tile(row, col):
     emit("open", json.dumps(getTileData()), broadcast=True)
 
 
+@socketio.on("reset")
+@log_on_start(logging.INFO, "Resetting game", logger=GAME_LOGGER)
+def reset_game():
+    board.game_reset()
+    emit("board", json.dumps(getTileData()), broadcast=True)
+
+
 def getTileData():
     tiles = []
     for r in range(board.rows):
